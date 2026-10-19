@@ -1,0 +1,6 @@
+{
+  "name": "百图品牌插件",
+  "description": "将 DeepSeek Harness 客户端名称改为百图，并使用自定义图标",
+  "enable": "启用",
+  "disable": "禁用"
+}

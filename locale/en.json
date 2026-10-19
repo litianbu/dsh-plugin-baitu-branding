@@ -1,0 +1,6 @@
+{
+  "name": "BaiTu Branding Plugin",
+  "description": "Change the DeepSeek Harness client name to BaiTu and use a custom icon",
+  "enable": "Enable",
+  "disable": "Disable"
+}

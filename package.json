@@ -1,0 +1,45 @@
+{
+  "name": "dsh-plugin-baitu-branding",
+  "version": "1.0.0",
+  "description": "将 DeepSeek Harness 客户端名称改为百图，并使用自定义图标",
+  "type": "module",
+  "main": "lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./client": "./lib/client.js",
+    "./locale/en.json": "./locale/en.json",
+    "./locale/zh.json": "./locale/zh.json",
+    "./cordis.patch.yml": "./cordis.patch.yml",
+    "./package.json": "./package.json"
+  },
+  "files": ["lib", "assets", "locale", "cordis.patch.yml", "README.md"],
+  "scripts": {
+    "test": "echo \"No tests yet\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/YOUR_USERNAME/dsh-plugin-baitu-branding.git"
+  },
+  "homepage": "https://github.com/YOUR_USERNAME/dsh-plugin-baitu-branding#readme",
+  "bugs": {
+    "url": "https://github.com/YOUR_USERNAME/dsh-plugin-baitu-branding/issues"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "inject": [
+        "@deepseek-ai/dsh-client-locale",
+        "@deepseek-ai/dsh-api-gateway"
+      ]
+    }
+  },
+  "keywords": ["dsh", "plugin", "branding", "百图", "baitu", "deepseek", "harness"],
+  "author": "",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
