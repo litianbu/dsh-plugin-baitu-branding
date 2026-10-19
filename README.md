@@ -76,7 +76,7 @@ dsh-plugin-baitu-branding/
 ## ⚙️ 自定义
 
 - 改名称：编辑 `lib/client.js` 里的 `const NAME = "百图";`（品牌名）与 `const TITLE = "百图 HARNESS";`（标签页标题）。
-- 改 HARNESS 徽章文字：编辑 `lib/client.js` 里 `BaituName` 组件中的 `"HARNESS"` 字符串。
+- 改 HARNESS 徽章：徽章是官方 wordmark 的矢量字形（`HARNESS_PATHS`），不是字体排版；要换文字需要替换对应矢量路径。
 - 改图标：替换 `assets/icon.svg`，并把新图标的 base64 同步进 `lib/client.js` 的 `MARK` 常量。
 
 ## 📝 开发与验证

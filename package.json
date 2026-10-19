@@ -1,6 +1,6 @@
 {
   "name": "dsh-plugin-baitu-branding",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "description": "将 DeepSeek Harness 客户端名称改为百图，并使用自定义图标",
   "type": "module",
   "main": "lib/index.js",
