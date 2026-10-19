@@ -8,10 +8,10 @@
 
 | 位置 | 效果 |
 | --- | --- |
-| 侧边栏左上角（展开态） | 名称文字「DeepSeek Harness」→「百图」，图标 → 百图图标 |
+| 侧边栏左上角（展开态） | 「DeepSeek HARNESS」→「百图 HARNESS」（百图 + 官方同款 HARNESS 小徽章），图标 → 百图图标 |
 | 侧边栏（收起轨道） | 图标 → 百图图标 |
 | 会话首屏（空会话页） | 官方动画鱼图标 → 百图图标 |
-| 浏览器标签页（Web 方式打开时） | 标题 →「百图」，favicon → 百图图标 |
+| 浏览器标签页（Web 方式打开时） | 标题 →「百图 HARNESS」，favicon → 百图图标 |
 
 只有真正被 UI 渲染的 slot 才会变化，不改动页面其它文字，也不会干扰输入框、代码块等内容。
 
@@ -75,7 +75,8 @@ dsh-plugin-baitu-branding/
 
 ## ⚙️ 自定义
 
-- 改名称：编辑 `lib/client.js` 里的 `const NAME = "百图";`。
+- 改名称：编辑 `lib/client.js` 里的 `const NAME = "百图";`（品牌名）与 `const TITLE = "百图 HARNESS";`（标签页标题）。
+- 改 HARNESS 徽章文字：编辑 `lib/client.js` 里 `BaituName` 组件中的 `"HARNESS"` 字符串。
 - 改图标：替换 `assets/icon.svg`，并把新图标的 base64 同步进 `lib/client.js` 的 `MARK` 常量。
 
 ## 📝 开发与验证
