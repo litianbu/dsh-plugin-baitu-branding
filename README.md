@@ -1,150 +1,93 @@
 # DSH 百图品牌插件
 
-将 DeepSeek Harness 客户端品牌改为"百图"，使用自定义图标。
+把 DeepSeek Harness **界面里**的品牌名与图标换成「百图」。
 
 ## ✨ 功能
 
-- 🎯 将页面标题改为"百图"
-- 🎨 替换浏览器标签页图标为自定义 SVG
-- 📝 自动替换页面中所有"DeepSeek Harness"文本为"百图"
-- 👀 使用 MutationObserver 监控 DOM 变化，确保动态加载的内容也会被替换
-- 🌍 支持中英文界面
+插件通过 DSH 官方的 **UI Slot 机制**（而不是改 DOM 文本）替换品牌位：
 
-## 📦 安装
+| 位置 | 效果 |
+| --- | --- |
+| 侧边栏左上角（展开态） | 名称文字「DeepSeek Harness」→「百图」，图标 → 百图图标 |
+| 侧边栏（收起轨道） | 图标 → 百图图标 |
+| 会话首屏（空会话页） | 官方动画鱼图标 → 百图图标 |
+| 浏览器标签页（Web 方式打开时） | 标题 →「百图」，favicon → 百图图标 |
 
-### 方式 1：从 GitHub 安装（推荐）
+只有真正被 UI 渲染的 slot 才会变化，不改动页面其它文字，也不会干扰输入框、代码块等内容。
 
-1. 克隆此仓库：
+## ⚠️ 能力边界（重要）
 
-```bash
-git clone https://github.com/litianbu/dsh-plugin-baitu-branding.git
-```
+DSH 插件运行在 **应用内部（Web 客户端层）**，因此：
 
-2. 将插件链接到 DSH 插件目录：
+- ✅ 可以改：应用窗口内显示的侧边栏品牌名/图标、首屏图标、网页标题与 favicon。
+- ❌ 不能改：**macOS 应用本身**的 Dock 图标、程序名、菜单栏名称（「DeepSeek Harness」）。
 
-```bash
-# macOS/Linux
-ln -s "$(pwd)" ~/.dsh/profiles/desktop/node_modules/dsh-plugin-baitu-branding
+Dock 图标与应用名来自 `/Applications/DeepSeek Harness.app` 这个安装包（`Info.plist`、`icon.icns`），属于应用打包资源，插件没有权限、也不应该去改它——即使改了，应用更新或重装也会被覆盖。若需要替换 Dock 图标，只能自行修改应用包（会破坏签名，且每次更新都要重做），不属于插件能力范围。
 
-# Windows (需要管理员权限)
-mklink /D "%USERPROFILE%\.dsh\profiles\desktop\node_modules\dsh-plugin-baitu-branding" "%CD%"
-```
+## 📦 安装（在 DSH 图形界面里完成）
 
-3. 在 DSH 配置中启用插件：
-   编辑 `~/.dsh/profiles/desktop/package.json`，添加：
+1. 打开 DeepSeek Harness → 插件管理 → 「添加插件」。
+2. 填入 GitHub 地址：
 
-```json
-{
-  "dependencies": {
-    "dsh-plugin-baitu-branding": "^1.0.0"
-  },
-  "dsh": {
-    "profile": {
-      "bundles": ["dsh-plugin-baitu-branding"]
-    }
-  }
-}
-```
+   ```
+   https://github.com/litianbu/dsh-plugin-baitu-branding
+   ```
 
-4. 重启 DeepSeek Harness
+3. 安装完成后**启用插件**，然后重启 DeepSeek Harness（或重新打开窗口）。
+4. 侧边栏左上角应显示「百图」+ 百图图标。
 
-### 方式 2：直接复制
+> 若公司网络导致 git 无法直连 GitHub，可改用 `.tgz` 直链安装（跳过 git 连接检查）：
+> `https://github.com/litianbu/dsh-plugin-baitu-branding/archive/refs/heads/main.tar.gz`
 
-1. 下载或克隆此仓库
-2. 将整个目录复制到 DSH 插件目录：
-
-```bash
-cp -r dsh-plugin-baitu-branding ~/.dsh/profiles/desktop/node_modules/
-```
-
-3. 按照"方式 1"的步骤 3 和 4 配置并重启
-
-## 📁 项目结构
+## 🧱 项目结构
 
 ```
 dsh-plugin-baitu-branding/
-├── package.json          # 插件配置和元数据
-├── cordis.patch.yml      # Cordis 插件注册
-├── README.md            # 说明文档
-├── .gitignore           # Git 忽略文件
+├── package.json          # 插件清单（dsh.bundle.patch + dsh.client）
+├── cordis.patch.yml      # 把插件插入 DSH 的插件列表
 ├── lib/
-│   ├── index.js         # 服务端入口
-│   └── client.js        # 客户端实现（核心逻辑）
+│   ├── index.js          # 服务端入口（空实现，仅占位）
+│   └── client.js         # 浏览器端：注册品牌 slot + 标题/favicon
 ├── assets/
-│   └── icon.svg         # 自定义百图图标
-└── locale/
-    ├── zh.json          # 中文本地化
-    └── en.json          # 英文本地化
+│   └── icon.svg          # 百图图标（内嵌 PNG，单文件可离线使用）
+├── locale/
+│   ├── zh.json
+│   └── en.json
+└── README.md
 ```
 
 ## 🔧 工作原理
 
-插件通过以下方式实现品牌替换：
+`lib/client.js` 是一个 DSH **客户端模块**（浏览器端），按官方约定通过
+`window.__ModuleLoader__.load({ id, factory })` 注册，导出 `inject` 与 `apply`：
 
-1. **页面标题**: 直接修改 `document.title`
-2. **图标**: 加载 `assets/icon.svg` 并转换为 Blob URL，替换所有 favicon 链接
-3. **文本替换**: 使用 TreeWalker 遍历 DOM，替换所有包含"DeepSeek Harness"的文本节点
-4. **动态监控**: 使用 MutationObserver 监控 DOM 变化，确保新加载的内容也会被处理
-5. **标题保护**: 监听标题变化，防止被覆盖
+- `apply(ctx)` 里用 `ctx.slots.inject(...)` 等待侧边栏声明后，用
+  `ctx.slots.register({ name: 'sidebar.brand.mark' }, BaituMark)` 与
+  `ctx.slots.register({ name: 'sidebar.brand.name' }, BaituName)` 占据品牌位；
+  同时注册 `conversation.hero.brand.mark` 替换首屏图标。
+- 用 `ctx.effect(...)` 设置 `document.title` 与 favicon，并在插件卸载时还原。
+- 图标以 `data:image/png;base64,...` 内联进 `lib/client.js`，无需额外静态资源服务。
+
+**遮蔽官方条目**：官方 `@deepseek-ai/dsh-client-ui-brand-official` 已以默认
+`priority: 0` 占据 `sidebar.brand.mark` / `sidebar.brand.name`。DSH 的 single slot
+在同一优先级上只允许一个注册（重复注册会直接抛错），而**数字越小越优先渲染**，
+因此本插件以 `priority: -1` 注册，从而遮蔽官方条目；无需禁用官方插件。
 
 ## ⚙️ 自定义
 
-### 修改品牌名称
+- 改名称：编辑 `lib/client.js` 里的 `const NAME = "百图";`。
+- 改图标：替换 `assets/icon.svg`，并把新图标的 base64 同步进 `lib/client.js` 的 `MARK` 常量。
 
-编辑 `lib/client.js`，搜索"百图"并替换为你想要的名称：
-
-```javascript
-document.title = "你的品牌名称";
-```
-
-### 修改图标
-
-替换 `assets/icon.svg` 文件为你的自定义 SVG 图标。
-
-## 🚀 发布到 npm
-
-如果你想将插件发布到 npm：
+## 📝 开发与验证
 
 ```bash
-# 登录 npm
-npm login
-
-# 发布
-npm publish
+# 语法检查
+node --check lib/client.js
 ```
 
-发布后，用户可以通过以下方式安装：
-
-```bash
-cd ~/.dsh/profiles/desktop
-npm install dsh-plugin-baitu-branding
-```
-
-## 📝 开发
-
-### 本地开发
-
-1. 在开发目录中修改代码
-2. 使用符号链接安装到 DSH
-3. 重启 DSH 查看效果
-
-### 测试
-
-重启 DSH 后，检查：
-
-- 浏览器标签页标题是否显示"百图"
-- 标签页图标是否为自定义 SVG
-- 页面中的"DeepSeek Harness"文本是否被替换
-
-## 🤝 贡献
-
-欢迎提交 Issue 和 Pull Request！
+改完代码后，需要在 DSH 中更新插件（重新安装 GitHub 地址，或更新本地副本）并重启应用，
+因为客户端 bundle 在启动时组合、带不可变 revision。
 
 ## 📄 许可证
 
 MIT License
-
-## 🙏 致谢
-
-- [DeepSeek Harness](https://github.com/deepseek-ai/dsh) - 优秀的 AI 开发工具
-- 图标设计灵感来自百图项目
