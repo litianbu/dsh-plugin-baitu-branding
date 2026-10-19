@@ -12,17 +12,23 @@
     "./cordis.patch.yml": "./cordis.patch.yml",
     "./package.json": "./package.json"
   },
-  "files": ["lib", "assets", "locale", "cordis.patch.yml", "README.md"],
+  "files": [
+    "lib",
+    "assets",
+    "locale",
+    "cordis.patch.yml",
+    "README.md"
+  ],
   "scripts": {
     "test": "echo \"No tests yet\""
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/YOUR_USERNAME/dsh-plugin-baitu-branding.git"
+    "url": "https://github.com/litianbu/dsh-plugin-baitu-branding.git"
   },
-  "homepage": "https://github.com/YOUR_USERNAME/dsh-plugin-baitu-branding#readme",
+  "homepage": "https://github.com/litianbu/dsh-plugin-baitu-branding#readme",
   "bugs": {
-    "url": "https://github.com/YOUR_USERNAME/dsh-plugin-baitu-branding/issues"
+    "url": "https://github.com/litianbu/dsh-plugin-baitu-branding/issues"
   },
   "dsh": {
     "bundle": {
@@ -36,7 +42,15 @@
       ]
     }
   },
-  "keywords": ["dsh", "plugin", "branding", "百图", "baitu", "deepseek", "harness"],
+  "keywords": [
+    "dsh",
+    "plugin",
+    "branding",
+    "百图",
+    "baitu",
+    "deepseek",
+    "harness"
+  ],
   "author": "",
   "license": "MIT",
   "engines": {
