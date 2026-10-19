@@ -15,11 +15,13 @@
 ### 方式 1：从 GitHub 安装（推荐）
 
 1. 克隆此仓库：
+
 ```bash
-git clone https://github.com/YOUR_USERNAME/dsh-plugin-baitu-branding.git
+git clone https://github.com/litianbu/dsh-plugin-baitu-branding.git
 ```
 
 2. 将插件链接到 DSH 插件目录：
+
 ```bash
 # macOS/Linux
 ln -s "$(pwd)" ~/.dsh/profiles/desktop/node_modules/dsh-plugin-baitu-branding
@@ -29,7 +31,8 @@ mklink /D "%USERPROFILE%\.dsh\profiles\desktop\node_modules\dsh-plugin-baitu-bra
 ```
 
 3. 在 DSH 配置中启用插件：
-编辑 `~/.dsh/profiles/desktop/package.json`，添加：
+   编辑 `~/.dsh/profiles/desktop/package.json`，添加：
+
 ```json
 {
   "dependencies": {
@@ -37,9 +40,7 @@ mklink /D "%USERPROFILE%\.dsh\profiles\desktop\node_modules\dsh-plugin-baitu-bra
   },
   "dsh": {
     "profile": {
-      "bundles": [
-        "dsh-plugin-baitu-branding"
-      ]
+      "bundles": ["dsh-plugin-baitu-branding"]
     }
   }
 }
@@ -51,9 +52,11 @@ mklink /D "%USERPROFILE%\.dsh\profiles\desktop\node_modules\dsh-plugin-baitu-bra
 
 1. 下载或克隆此仓库
 2. 将整个目录复制到 DSH 插件目录：
+
 ```bash
 cp -r dsh-plugin-baitu-branding ~/.dsh/profiles/desktop/node_modules/
 ```
+
 3. 按照"方式 1"的步骤 3 和 4 配置并重启
 
 ## 📁 项目结构
@@ -91,7 +94,7 @@ dsh-plugin-baitu-branding/
 编辑 `lib/client.js`，搜索"百图"并替换为你想要的名称：
 
 ```javascript
-document.title = '你的品牌名称';
+document.title = "你的品牌名称";
 ```
 
 ### 修改图标
@@ -128,6 +131,7 @@ npm install dsh-plugin-baitu-branding
 ### 测试
 
 重启 DSH 后，检查：
+
 - 浏览器标签页标题是否显示"百图"
 - 标签页图标是否为自定义 SVG
 - 页面中的"DeepSeek Harness"文本是否被替换
